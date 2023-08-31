@@ -1,34 +1,55 @@
 "use client";
+import { Home, Plus, Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
 
-import { FreeCounter } from "@/components/free-counter";
 import { useProModal } from "@/hooks/use-pro-modal";
-
-import Image from "next/image";
 import { useParams, usePathname, useRouter } from "next/navigation";
-
 import { cn } from "@/lib/utils";
 import { ActionTooltip } from "@/components/action-tooltip";
-import { LucideIcon, icons } from 'lucide-react';
+
+const routes = [
+  {
+    name: "Home",
+    icon: Home,
+  },
+  {
+    name: "AIHelper",
+    icon: MessageSquare,
+  },
+  {
+    name: "Image",
+    icon: ImageIcon,
+  },
+  {
+    name: "Video",
+    icon: VideoIcon,
+  },
+  {
+    name: "Music",
+    icon: Music,
+  },
+  {
+    name: "Code",
+    icon: Code,
+  },
+  {
+    name: "Create",
+    icon: Plus,
+  },
+  {
+    name: "Settings",
+    icon: Settings,
+  },
+];
 
 interface NavigationItemProps {
-  name: string;
-  icon: any;
-  color?: string;
+  route: any;
   // imageUrl: string;
-  label: string;
-  href: string;
-  proRequired: boolean;
   isPro: boolean;
 };
 
 export const NavigationItem = ({
-  name,
-  icon,
+  route,
   // imageUrl,
-  label,
-  href,
-  proRequired,
-  color = "text-primary",
   isPro,
 }: NavigationItemProps) => {
   const proModal = useProModal();
@@ -43,32 +64,22 @@ export const NavigationItem = ({
 
     return router.push(url);
   }
+  let thisRoute = routes.find(o => o.name === route.name) ?? routes[0];
 
-  const LucideIcon = icon;
- 
   return (
     <ActionTooltip
       side="right"
       align="center"
-      label={label}
+      label={route.label}
     >
       <button
-        onClick={() => onNavigate(href, proRequired)}
+        onClick={() => onNavigate(route.href, route.proRequired)}
         className="group relative flex items-center"
       >
         <div className={cn(
-          "absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
-          // params?.routeName !== name && "group-hover:h-[20px]",
-          // params?.routeName === name ? "h-[36px]" : "h-[8px]"
-          pathname !== href && "group-hover:h-[20px]",
-          pathname === href ? "h-[36px]" : "h-[8px]"
-        )} />
-        <div className={cn(
-          "relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden",
-          params?.routeName === name && "bg-primary/10 text-primary rounded-[16px]"
+          "relative group flex mx-6 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all",
         )}>
-          <LucideIcon className={cn("h-5 w-5 mr-0", color)} />
-          {label}
+          <thisRoute.icon className={cn("group-hover:text-white transition text-emerald-500", route.color)} />
         </div>
       </button>
     </ActionTooltip>

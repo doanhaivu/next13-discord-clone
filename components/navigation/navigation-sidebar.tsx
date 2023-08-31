@@ -1,6 +1,4 @@
-import { Home, Plus, Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
 
-import { redirect } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import { FreeCounter } from "@/components/free-counter";
 
@@ -12,6 +10,7 @@ import { db } from "@/lib/db";
 
 import { NavigationAction } from "./navigation-action";
 import { NavigationItem } from "./navigation-item";
+import { NavigationItemServer } from "./navigation-item-server";
 interface SidebarProps {
   isPro: boolean;
   apiLimitCount: number;
@@ -21,21 +20,12 @@ const routes = [
   {
     label: "Companions",
     name: "Home",
-    icon: Home,
     href: '/',
     pro: false,
-  },/*
-  {
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/dashboard',
-    color: "text-sky-500",
-    pro: false,
-  },*/
+  },
   {
     label: 'AI Helper',
     name: "AIHelper",
-    icon: MessageSquare,
     href: '/conversation',
     color: "text-violet-500",
     pro: false,
@@ -43,7 +33,6 @@ const routes = [
   {
     label: 'Image',
     name: "Image",
-    icon: ImageIcon,
     color: "text-pink-700",
     href: '/image',
     pro: false,
@@ -51,7 +40,6 @@ const routes = [
   {
     label: 'Video',
     name: "Video",
-    icon: VideoIcon,
     color: "text-orange-700",
     href: '/video',
     pro: false,
@@ -59,7 +47,6 @@ const routes = [
   {
     label: 'Music',
     name: "Music",
-    icon: Music,
     color: "text-emerald-500",
     href: '/music',
     pro: false,
@@ -67,7 +54,6 @@ const routes = [
   {
     label: 'Code',
     name: "Code",
-    icon: Code,
     color: "text-green-700",
     href: '/code',
     pro: false,
@@ -75,23 +61,36 @@ const routes = [
   {
     label: "Create",
     name: "Create",
-    icon: Plus,
     href: '/companion/new',
     pro: true,
   },
   {
     label: 'Settings',
     name: "Settings",
-    icon: Settings,
     href: '/settings',
     pro: false,
   },
 ];
 
-export const NavigationSidebar = ({
+export const NavigationSidebar = async ({
   apiLimitCount = 0,
   isPro = false,
 }: SidebarProps) => {
+  const profile = await currentProfile();
+
+  let servers: any[] = [];
+  if (profile) {
+    servers = await db.server.findMany({
+      where: {
+        members: {
+          some: {
+            profileId: profile.id
+          }
+        }
+      }
+    });
+  }
+
   return (
     <div
       className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] bg-[#E3E5E8] py-3"
@@ -101,15 +100,24 @@ export const NavigationSidebar = ({
         className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto"
       />
       <ScrollArea className="flex-1 w-full">
+        {servers.map((server) => (
+          <div key={server.id} className="mb-4">
+            <NavigationItemServer
+              id={server.id}
+              name={server.name}
+              imageUrl={server.imageUrl}
+            />
+          </div>
+        ))}
+      </ScrollArea>
+      <Separator
+        className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto"
+      />
+      <ScrollArea className="flex-1 w-full">
         {routes.map((route) => (
           <div key={route.name} className="mb-4">
             <NavigationItem
-              name={route.name}
-              icon={route.icon}
-              label={route.label}
-              href={route.href}
-              proRequired={route.pro}
-              color={route.color}
+              route={route}
               isPro={isPro}
             />
           </div>

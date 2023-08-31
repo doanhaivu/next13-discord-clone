@@ -29,7 +29,7 @@ const roleIconMap = {
   [MemberRole.ADMIN]: <ShieldAlert className="h-4 w-4 mr-2 text-rose-500" />
 }
 
-export const ServerSidebar = async ({
+export const ServerSidebarLeft = async ({
   serverId
 }: ServerSidebarProps) => {
   const profile = await currentProfile();
@@ -62,7 +62,6 @@ export const ServerSidebar = async ({
   const textChannels = server?.channels.filter((channel) => channel.type === ChannelType.TEXT)
   const audioChannels = server?.channels.filter((channel) => channel.type === ChannelType.AUDIO)
   const videoChannels = server?.channels.filter((channel) => channel.type === ChannelType.VIDEO)
-  const members = server?.members.filter((member) => member.profileId !== profile.id)
 
   if (!server) {
     return redirect("/");
@@ -105,15 +104,6 @@ export const ServerSidebar = async ({
                   id: channel.id,
                   name: channel.name,
                   icon: iconMap[channel.type],
-                }))
-              },
-              {
-                label: "Members",
-                type: "member",
-                data: members?.map((member) => ({
-                  id: member.id,
-                  name: member.profile.name,
-                  icon: roleIconMap[member.role],
                 }))
               },
             ]}
@@ -174,25 +164,6 @@ export const ServerSidebar = async ({
                   key={channel.id}
                   channel={channel}
                   role={role}
-                  server={server}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-        {!!members?.length && (
-          <div className="mb-2">
-            <ServerSection
-              sectionType="members"
-              role={role}
-              label="Members"
-              server={server}
-            />
-            <div className="space-y-[2px]">
-              {members.map((member) => (
-                <ServerMember
-                  key={member.id}
-                  member={member}
                   server={server}
                 />
               ))}
