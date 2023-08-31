@@ -1,5 +1,5 @@
 "use client";
-import { Home, Plus, Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
+import { Home, Paperclip, Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
 
 import { useProModal } from "@/hooks/use-pro-modal";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ const routes = [
   },
   {
     name: "Create",
-    icon: Plus,
+    icon: Paperclip,
   },
   {
     name: "Settings",

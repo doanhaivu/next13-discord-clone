@@ -22,6 +22,7 @@ const routes = [
     name: "Home",
     href: '/',
     pro: false,
+    enabled: false,
   },
   {
     label: 'AI Helper',
@@ -29,6 +30,7 @@ const routes = [
     href: '/conversation',
     color: "text-violet-500",
     pro: false,
+    enabled: false,
   },
   {
     label: 'Image',
@@ -36,6 +38,7 @@ const routes = [
     color: "text-pink-700",
     href: '/image',
     pro: false,
+    enabled: false,
   },
   {
     label: 'Video',
@@ -43,6 +46,7 @@ const routes = [
     color: "text-orange-700",
     href: '/video',
     pro: false,
+    enabled: false,
   },
   {
     label: 'Music',
@@ -50,6 +54,7 @@ const routes = [
     color: "text-emerald-500",
     href: '/music',
     pro: false,
+    enabled: false,
   },
   {
     label: 'Code',
@@ -57,18 +62,21 @@ const routes = [
     color: "text-green-700",
     href: '/code',
     pro: false,
+    enabled: false,
   },
   {
     label: "Create",
     name: "Create",
     href: '/companion/new',
     pro: true,
+    enabled: true,
   },
   {
     label: 'Settings',
     name: "Settings",
     href: '/settings',
     pro: false,
+    enabled: true,
   },
 ];
 
@@ -114,7 +122,7 @@ export const NavigationSidebar = async ({
         className="h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto"
       />
       <ScrollArea className="flex-1 w-full">
-        {routes.map((route) => (
+        {routes.filter(route => route.enabled).map((route) => (
           <div key={route.name} className="mb-4">
             <NavigationItem
               route={route}
