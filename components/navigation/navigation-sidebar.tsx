@@ -1,6 +1,5 @@
 
 import { UserButton } from "@clerk/nextjs";
-import { FreeCounter } from "@/components/free-counter";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -131,10 +130,6 @@ export const NavigationSidebar = async ({
           </div>
         ))}
       </ScrollArea>
-      <FreeCounter 
-            apiLimitCount={apiLimitCount} 
-            isPro={isPro}
-      />
       <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
         <ModeToggle />
         <UserButton

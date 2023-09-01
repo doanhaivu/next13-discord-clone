@@ -70,14 +70,14 @@ export const ServerSidebarRight = async ({
   return (
     <div className="flex flex-col h-full text-primary w-full dark:bg-[#2B2D31] bg-[#F2F3F5]">
       <ScrollArea className="flex-1 px-3">
-        {!!members?.length && (
-          <div className="mb-2">
-            <ServerSection
-              sectionType="members"
-              role={role}
-              label="Members"
-              server={server}
-            />
+        <div className="mb-2">
+          <ServerSection
+            sectionType="members"
+            role={role}
+            label="Members"
+            server={server}
+          />
+          {!!members?.length && (
             <div className="space-y-[2px]">
               {members.map((member) => (
                 <ServerMember
@@ -87,8 +87,8 @@ export const ServerSidebarRight = async ({
                 />
               ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </ScrollArea>
     </div>
   )

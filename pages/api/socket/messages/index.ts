@@ -74,6 +74,7 @@ export default async function handler(
         fileUrl,
         channelId: channelId as string,
         memberId: member.id,
+        role: 'user',
       },
       include: {
         member: {
