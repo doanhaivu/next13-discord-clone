@@ -80,7 +80,7 @@ export const ServerSidebarLeft = async ({
           <ServerSearch
             data={[
               {
-                label: "Text Channels",
+                label: "Channels",
                 type: "channel",
                 data: textChannels?.map((channel) => ({
                   id: channel.id,
@@ -116,7 +116,7 @@ export const ServerSidebarLeft = async ({
               sectionType="channels"
               channelType={ChannelType.TEXT}
               role={role}
-              label="Text Channels"
+              label="Channels"
             />
             <div className="space-y-[2px]">
               {textChannels.map((channel) => (
@@ -170,6 +170,7 @@ export const ServerSidebarLeft = async ({
             </div>
           </div>
         )}
+        <Separator className="bg-zinc-200 dark:bg-zinc-700 rounded-md my-2" />
       </ScrollArea>
     </div>
   )
