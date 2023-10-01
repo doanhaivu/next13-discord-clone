@@ -24,7 +24,7 @@ export const MobileToggle = ({
       </SheetTrigger>
       <SheetContent side="left" className="p-0 flex gap-0">
         <div className="w-[72px]">
-          <NavigationSidebar />
+          <NavigationSidebar isPro={false} apiLimitCount={0}/>
         </div>
         <ServerSidebarLeft serverId={serverId} />
       </SheetContent>
