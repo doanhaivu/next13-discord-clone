@@ -5,7 +5,6 @@ import qs from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { UploadFileResponse } from 'uploadthing/client';
 
 import {
   Dialog,
@@ -132,7 +131,7 @@ export const MessageFileModal = () => {
                         <FileUpload
                           endpoint="messageFile"
                           value={field.value}
-                          onChange={(file: UploadFileResponse | undefined) => {
+                          onChange={(file: any | undefined) => {
                             if (file) {
                               setFileName(file.name);
                               field.onChange(file.url);
