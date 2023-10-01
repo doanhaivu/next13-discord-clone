@@ -5,6 +5,7 @@ import qs from "query-string";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { UploadFileResponse } from 'uploadthing/client';
 
 import {
   Dialog,
@@ -25,6 +26,7 @@ import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { absoluteUrl } from "@/lib/utils";
+import { useState } from "react";
 
 const formSchema = z.object({
   fileUrl: z.string().min(1, {
@@ -35,7 +37,7 @@ const formSchema = z.object({
 async function postFileContent(fileUrl: string) {
   try {
     // Step 1: Retrieve the file content from the URL
-    const response = await axios.get(fileUrl, { responseType: 'blob' }); // use 'arraybuffer' to handle binary files
+    const response = await axios.get(fileUrl, { responseType: 'blob' });
     const formData = new FormData();
     formData.append('file', response.data);
     formData.append('metadata', JSON.stringify({ filename: fileUrl }));
@@ -61,6 +63,7 @@ async function postFileContent(fileUrl: string) {
 }
 
 export const MessageFileModal = () => {
+  const [fileName, setFileName] = useState('');
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
 
@@ -90,7 +93,6 @@ export const MessageFileModal = () => {
 
       console.log('Posting message to: ', url);
       console.log('Message content: ', values);
-      console.log('File URL: ', values.fileUrl);
       await axios.post(url, {
         ...values,
         content: values.fileUrl,
@@ -102,7 +104,7 @@ export const MessageFileModal = () => {
       router.refresh();
       handleClose();
     } catch (error) {
-      console.log(error);
+      console.log('Error posting message: ',error);
     }
   }
 
@@ -130,16 +132,24 @@ export const MessageFileModal = () => {
                         <FileUpload
                           endpoint="messageFile"
                           value={field.value}
-                          onChange={field.onChange}
+                          onChange={(file: UploadFileResponse | undefined) => {
+                            if (file) {
+                              setFileName(file.name);
+                              field.onChange(file.url);
+                            }
+                          }}
                         />
                       </FormControl>
                     </FormItem>
                   )}
                 />
               </div>
+              <div className="text-center text-gray-500 font-bold">
+                {fileName && `Selected file: ${fileName}`}
+              </div>
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button variant="primary" disabled={isLoading}>
+              <Button variant="primary" disabled={isLoading || !form.formState.isValid}>
                 Send
               </Button>
             </DialogFooter>
