@@ -10,9 +10,18 @@ const nextConfig = {
   },
   images: {
     domains: [
-      "uploadthing.com"
+      "uploadthing.com",
+      "uploadthingy.com",
     ]
-  }
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://chatvector.fly.dev/:path*' // Proxy to Backend
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

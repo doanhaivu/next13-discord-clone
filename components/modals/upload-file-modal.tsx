@@ -91,7 +91,7 @@ export const UploadFileModal = () => {
                     <FormItem>
                       <FormControl>
                         <FileUpload
-                          endpoint="messageFile"
+                          endpoint="uploadFile"
                           value={field.value}
                           onChange={field.onChange}
                         />
@@ -126,7 +126,7 @@ export const UploadFileModal = () => {
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-                Create
+                Upload
               </Button>
             </DialogFooter>
           </form>
