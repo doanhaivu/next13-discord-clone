@@ -49,7 +49,7 @@ async function postFileContent(fileUrl: string) {
 
     const config = {
       headers: {
-        'Authorization': `Bearer ${process.env.RETRIEVAL_PLUGIN_TOKEN}`
+        'Authorization': `Bearer ${process.env.RETRIEVAL_PLUGIN_BEARER_TOKEN}`
         // Note: When using FormData, axios will set the 'Content-Type' header to 'multipart/form-data' by default
       }
     };
