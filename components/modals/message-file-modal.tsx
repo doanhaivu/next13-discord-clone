@@ -47,14 +47,15 @@ async function postFileContent(fileUrl: string) {
     const postUrl = absoluteUrl("/api/upsert-file");
     // if (!postUrl) throw new Error('RETRIEVAL_PLUGIN_URL is not set');
 
+    const RETRIEVAL_PLUGIN_BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcHAiOiJjaGF0dmVjdG9yIiwibmFtZSI6IlZ1IiwiaWF0IjoxNjkwNTE3NjI3fQ.5CM3_5CKXpLoHKipj-oM-VtxY_bolVLeYXJ0h9GQwHE';
     const config = {
       headers: {
-        'Authorization': `Bearer ${process.env.RETRIEVAL_PLUGIN_BEARER_TOKEN}`
+        'Authorization': `Bearer ${RETRIEVAL_PLUGIN_BEARER_TOKEN}`
         // Note: When using FormData, axios will set the 'Content-Type' header to 'multipart/form-data' by default
       }
     };
     await axios.post(postUrl, formData, config);
-    
+
     console.log('File content posted successfully');
   } catch (error) {
     console.error('Error posting file content: ', error);
